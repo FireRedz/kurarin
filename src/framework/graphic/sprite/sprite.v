@@ -33,6 +33,21 @@ pub mut:
 	flip_y bool
 }
 
+@[unsafe]
+pub fn (mut sprite Sprite) free() {
+	unsafe {
+		free(sprite.time)
+
+		for mut transform in sprite.transforms {
+			transform.free()
+		}
+
+		free(sprite.position)
+		free(sprite.size)
+		free(sprite.raw_size)
+	}
+}
+
 // Transform FNs
 pub fn (mut sprite Sprite) apply_event(t transform.Transform, current_time f64) {
 	match t.typ {
