@@ -7,37 +7,51 @@ import sokol.sapp
 import framework.logging
 import framework.math.vector
 
+const invisible_pass = gfx.PassAction{
+	colors: [
+		gfx.ColorAttachmentAction{
+			load_action: .dontcare
+			clear_value: gfx.Color{1.0, 1.0, 1.0, 1.0}
+		},
+		gfx.ColorAttachmentAction{
+			load_action: .dontcare
+			clear_value: gfx.Color{1.0, 1.0, 1.0, 1.0}
+		},
+		gfx.ColorAttachmentAction{
+			load_action: .dontcare
+			clear_value: gfx.Color{1.0, 1.0, 1.0, 1.0}
+		},
+		gfx.ColorAttachmentAction{
+			load_action: .dontcare
+			clear_value: gfx.Color{1.0, 1.0, 1.0, 1.0}
+		},
+	]!
+}
+
 pub struct Context {
 	gg.Context
 mut:
-	has_gp_begin bool
-	cache        map[string]gg.Image
+	cache map[string]gg.Image
 pub mut:
 	texture_not_found gg.Image
-	invisible_pass    gfx.PassAction = gfx.PassAction{
-		colors: [
-			gfx.ColorAttachmentAction{
-				load_action: .dontcare
-				clear_value: gfx.Color{1.0, 1.0, 1.0, 1.0}
-			},
-			gfx.ColorAttachmentAction{
-				load_action: .dontcare
-				clear_value: gfx.Color{1.0, 1.0, 1.0, 1.0}
-			},
-			gfx.ColorAttachmentAction{
-				load_action: .dontcare
-				clear_value: gfx.Color{1.0, 1.0, 1.0, 1.0}
-			},
-			gfx.ColorAttachmentAction{
-				load_action: .dontcare
-				clear_value: gfx.Color{1.0, 1.0, 1.0, 1.0}
-			},
-		]!
+}
+
+pub fn Context.create(mut context gg.Context) &Context {
+	mut ctx := &Context{
+		Context: context
 	}
+
+	ctx.texture_not_found = ctx.Context.create_image('assets/common/textures/default.png') or {
+		logging.error('Failed to load default texture, undefined behaviour inbound!')
+
+		gg.Image{}
+	}
+
+	return ctx
 }
 
 // begin_gp ends sokol gp and gg context.
-pub fn (mut context Context) end_short() {
+pub fn (mut ctx Context) end_short() {
 	gfx.begin_pass(sapp.create_default_pass(context.invisible_pass))
 
 	sgl.draw()
@@ -47,26 +61,15 @@ pub fn (mut context Context) end_short() {
 }
 
 // create_image creates an image from the path specified, returns default texture if something went wrong.
-pub fn (mut context Context) create_image(path string) gg.Image {
-	if isnil(context.texture_not_found.data) {
-		logging.info('Default texture not loaded, loading it.')
-
-		if t_not_found := context.Context.create_image('assets/common/textures/default.png') {
-			logging.info('Default texture loaded.')
-			context.texture_not_found = t_not_found
-		} else {
-			logging.warn('Failed to load default texture, shit will look retarded.')
-		}
-	}
-
-	if path !in context.cache {
-		context.cache[path] = context.Context.create_image(path) or {
+pub fn (mut ctx Context) create_image(path string) gg.Image {
+	if path !in ctx.cache {
+		ctx.cache[path] = ctx.Context.create_image(path) or {
 			logging.warn('Failed to create image!')
-			return context.texture_not_found
+			return ctx.texture_not_found
 		}
 	}
 
-	return context.cache[path] or { panic('[Context] Cache missed: This should never happen.') }
+	return ctx.cache[path] or { panic('[Context] Cache missed: This should never happen.') }
 }
 
 pub struct DrawImageConfig {
