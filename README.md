@@ -12,8 +12,8 @@ This program is far from finished and it's not exactly stable either but it work
 Use [danser-go](https://github.com/Wieku/danser-go) or [McOsu](https://github.com/McKay42/McOsu), if you're looking for client alternative.
 
 ## Preview
-
 [Click here for video preview(s)](PREVIEWS.md)
+![2024-06-24_10-26](https://github.com/xjunko/kurarin/assets/44401509/056fed8b-550f-4a59-81b4-4e8c61a6c08f)
 
 ## Releases
 
