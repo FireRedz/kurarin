@@ -62,8 +62,6 @@ pub fn run() {
 		frame_fn: window.draw
 	)
 
-	window.ctx = &context.Context{
-		Context: gg_context
-	}
+	window.ctx = context.Context.create(mut gg_context)
 	window.ctx.run()
 }

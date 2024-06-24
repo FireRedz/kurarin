@@ -364,9 +364,7 @@ pub fn run(args []string) {
 		move_fn: window.event_mouse
 	)
 
-	window.ctx = &context.Context{
-		Context: gg_context
-	}
+	window.ctx = context.Context.create(mut gg_context)
 
 	logging.info('Wrapping Context with our own impl.')
 	logging.info('Get ready to run.')

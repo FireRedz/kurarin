@@ -427,9 +427,7 @@ pub fn initiate_game_loop(argument GameArgument) {
 		}
 	)
 
-	window.ctx = &context.Context{
-		Context: gg_context
-	}
+	window.ctx = context.Context.create(mut gg_context)
 
 	// Record or na
 	if settings.global.video.record {
