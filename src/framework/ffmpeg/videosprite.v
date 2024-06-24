@@ -25,12 +25,16 @@ pub mut:
 }
 
 pub fn (mut video VideoSprite) draw(arg sprite.CommonSpriteArgument) {
-	video.mutex.@lock()
-	if video.need_update {
-		video.update_texture()
-		video.need_update = false
+	// Dont bother waiting for the mutex, if it's locked, just skip this frame
+	// Video will catch up eventually
+	if video.mutex.try_lock() {
+		if video.need_update {
+			video.update_texture()
+			video.need_update = false
+		}
+
+		video.mutex.unlock()
 	}
-	video.mutex.unlock()
 
 	if video.is_drawable_at(arg.time) || video.always_visible {
 		video.ctx.draw_image_with_config(context.DrawImageConfig{
@@ -62,25 +66,13 @@ pub fn (mut video VideoSprite) update(update_time f64) {
 		return
 	}
 
-	// // Update video frame when needed...
-	// video.mutex.@lock()
-	// delta := time - video.last_time
-	// video.last_time = time
-
-	// video.delta_count += delta
-	// for video.delta_count >= video.frametime {
-	// 	video.delta_count -= video.frametime
-	// 	video.need_update = true
-	// 	video.update_video()
-	// }
-	// video.mutex.unlock()
-
 	video.mutex.@lock()
 	for video.videotime <= update_time {
 		video.videotime += video.frametime
 		video.update_video()
 		video.need_update = true
 	}
+
 	video.mutex.unlock()
 }
 
