@@ -66,21 +66,23 @@ pub fn (mut circle Circle) update(update_time f64) bool {
 	}
 	circle.combotext.update(update_time)
 
-	// Hitanimation, we're done
-	// if time >= circle.get_start_time() && !circle.done {
-	// 	// circle.arm(true, time)
-
-	// 	// Dont play if this is inherited from a slider
-	// 	// if !circle.inherited {
-	// 	// 	circle.play_hitsound()
-	// 	// }
-
-	// 	circle.done = true
-
-	// 	return true
-	// }
-
 	return false
+}
+
+pub fn (mut circle Circle) post_update(update_time f64) {
+	// Free unused stuff, if possible.
+	for mut c_sprite in circle.sprites {
+		match c_sprite {
+			sprite.Sprite {
+				mut c_sprite_actual := c_sprite as sprite.Sprite
+
+				unsafe {
+					c_sprite_actual.free()
+				}
+			}
+			else {}
+		}
+	}
 }
 
 pub fn (mut circle Circle) set_timing(t timing.Timings) {
