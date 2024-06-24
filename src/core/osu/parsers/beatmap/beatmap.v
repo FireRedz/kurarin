@@ -12,7 +12,9 @@ import sokol.sapp
 import framework.ffmpeg
 import framework.logging
 import framework.math.time
+import framework.math.easing
 import framework.math.vector
+import framework.math.glider
 import framework.graphic.sprite
 import framework.graphic.context
 import core.osu.x
@@ -47,6 +49,8 @@ pub struct BeatmapDifficultyInfo {
 }
 
 pub struct Beatmap {
+mut:
+	playfield_border &glider.Glider = glider.new_glider(0.0)
 pub mut:
 	root       string
 	filename   string
@@ -216,6 +220,11 @@ pub fn (mut beatmap Beatmap) reset() {
 		beatmap.time.start = math.min[f64](object.get_start_time(), beatmap.time.start)
 		beatmap.time.end = math.max[f64](object.get_end_time(), beatmap.time.end)
 	}
+
+	// Playfield animation
+	beatmap.playfield_border.easing = easing.quad_out
+	beatmap.playfield_border.add_event(-settings.global.gameplay.playfield.lead_in_time + 500.0,
+		-500.0, 1.0)
 }
 
 pub fn (mut beatmap Beatmap) update(update_time f64, boost f32) {
@@ -268,17 +277,14 @@ pub fn (mut beatmap Beatmap) update(update_time f64, boost f32) {
 	// Slider renderer scale
 	graphic.update_boost_level(f32(beatmap.last_boost))
 
-	// Playfield size update
-	// TODO: make this customizeable or smth
-	// Since this is math based animation instead of transformation (if that makes sense), we need to set the actual size after the lead_in_time ends
-	if beatmap.last_update + settings.global.gameplay.playfield.lead_in_time >= settings.global.gameplay.playfield.lead_in_time - 2000
-		&& beatmap.last_update + settings.global.gameplay.playfield.lead_in_time < settings.global.gameplay.playfield.lead_in_time {
-		beatmap.playfield_size.x = x.resolution.playfield.x * 0.25 + beatmap.playfield_size.x - beatmap.playfield_size.x * 0.25
-		beatmap.playfield_size.y = x.resolution.playfield.y * 0.25 + beatmap.playfield_size.y - beatmap.playfield_size.y * 0.25
-	} else if beatmap.last_update + settings.global.gameplay.playfield.lead_in_time > settings.global.gameplay.playfield.lead_in_time {
+	if beatmap.last_update + settings.global.gameplay.playfield.lead_in_time > settings.global.gameplay.playfield.lead_in_time {
 		// Over the lead_in_time, put actual size
 		beatmap.playfield_size.x = x.resolution.playfield.x
 		beatmap.playfield_size.y = x.resolution.playfield.y
+	} else {
+		beatmap.playfield_border.update(update_time)
+		beatmap.playfield_size.x = x.resolution.playfield.x * beatmap.playfield_border.value
+		beatmap.playfield_size.y = x.resolution.playfield.y * beatmap.playfield_border.value
 	}
 
 	// last
@@ -288,10 +294,7 @@ pub fn (mut beatmap Beatmap) update(update_time f64, boost f32) {
 }
 
 pub fn (mut beatmap Beatmap) post_update(update_time f64) {
-	// Note that this only used for freeing slider (cuz we're using shaders, vertex and stuff and those eat lots of ram)
-	// and also for some reason sokol doesnt support freeing it (maybe it does) on another thread, its only working
-	// when we freeing it on draw calls /shrug pretty weird ngl
-	// EDIT: ignore what i said earlier
+	// Post update is used to free unused memories, mostly for slider attributes.
 	for i := 0; i < beatmap.finished.len; i++ {
 		beatmap.finished[i].post_update(update_time)
 		beatmap.finished = beatmap.finished[1..]
@@ -344,22 +347,33 @@ pub fn (mut beatmap Beatmap) draw() {
 	gfx.end_pass()
 	gfx.commit()
 
-	// Draw stuff on its own "layer" or whatever it was called in
-	// sokol.
+	// We had to do it like this because slider rendering is unique.
 	if !settings.global.gameplay.hitobjects.disable_hitobjects { // We might want hitcircle hitsounds but not the hitcircle itself, so on draw calls ignored it but not on update calls
 		for i := beatmap.queue.len - 1; i >= 0; i-- {
 			mut hitobject := &beatmap.queue[i]
 
 			// Render slider body
-			// TODO: Fix this maybe, it looks kinda ugly like this.
 			if mut hitobject is object.Slider {
 				if beatmap.last_update <= hitobject.get_start_time() - beatmap.difficulty.preempt
 					|| beatmap.last_update <= hitobject.get_end_time() + difficulty.hit_fade_out {
-					// local_position := x.resolution.camera.translate(hitobject.position)
 					hitobject.slider_renderer_attr.draw_slider(1.0 - hitobject.slider_renderer_fade.value,
 						hitobject.color)
-					// beatmap.ctx.draw_text(int(local_position.x), int(local_position.y), "Type: ${hitobject.typ} | Pixel length: ${hitobject.pixel_length}", gx.TextCfg{color: gx.Color{255, 255, 255, u8(hitobject.slider_renderer_fade.value * 255.0)}, align: .center})
-					// beatmap.ctx.draw_text(int(local_position.x), int(local_position.y) + 16, "Curve length: ${hitobject.curve.length} | Curve lines: ${hitobject.curve.lines.len}", gx.TextCfg{color: gx.Color{255, 255, 255, u8(hitobject.slider_renderer_fade.value * 255.0)} align: .center})
+
+					$if debug {
+						local_position := x.resolution.camera.translate(hitobject.position)
+						beatmap.ctx.draw_text(int(local_position.x), int(local_position.y),
+							'Type: ${hitobject.typ} | Pixel length: ${hitobject.pixel_length}',
+							gx.TextCfg{
+							color: gx.Color{255, 255, 255, u8(hitobject.slider_renderer_fade.value * 255.0)}
+							align: .center
+						})
+						beatmap.ctx.draw_text(int(local_position.x), int(local_position.y) + 16,
+							'Curve length: ${hitobject.curve.length} | Curve lines: ${hitobject.curve.lines.len}',
+							gx.TextCfg{
+							color: gx.Color{255, 255, 255, u8(hitobject.slider_renderer_fade.value * 255.0)}
+							align: .center
+						})
+					}
 				}
 			}
 
@@ -378,7 +392,7 @@ pub fn (mut beatmap Beatmap) draw() {
 	}
 
 	// Free slider
-	// beatmap.free_slider_attr()
+	beatmap.free_slider_attr()
 
 	//
 	beatmap.storyboard.mutex.unlock()
