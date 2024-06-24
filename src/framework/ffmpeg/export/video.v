@@ -1,12 +1,11 @@
 module export
 
 import os
-import sokol.sapp
 import time as timelib
 import framework.audio
 import core.common.settings
 
-const used_import = sapp.used_import
+const used_import = 1
 
 pub struct Video {
 pub mut:

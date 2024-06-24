@@ -3,9 +3,9 @@ module context
 import gg
 import sokol.sgl
 import sokol.gfx
+import sokol.sapp
 import framework.logging
 import framework.math.vector
-import core.common.settings
 
 pub struct Context {
 	gg.Context
@@ -38,8 +38,7 @@ pub mut:
 
 // begin_gp ends sokol gp and gg context.
 pub fn (mut context Context) end_short() {
-	gfx.begin_default_pass(context.invisible_pass, int(settings.global.window.width),
-		int(settings.global.window.height))
+	gfx.begin_pass(sapp.create_default_pass(context.invisible_pass))
 
 	sgl.draw()
 	gfx.end_pass()

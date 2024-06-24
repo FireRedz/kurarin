@@ -11,9 +11,9 @@ module graphic
 import core.common.settings
 import core.osu.x
 import math
-import sokol
 import sokol.gfx
 import sokol.sgl
+import sokol.sapp
 import framework.logging
 import framework.math.vector
 import framework.math.time
@@ -23,7 +23,7 @@ import framework.math.time
 
 fn C.osu_slider_shader_desc(gfx.Backend) &gfx.ShaderDesc
 
-pub const used_import = gfx.used_import + sokol.used_import
+pub const used_import = 0
 pub const global_renderer = &SliderRenderer{}
 
 @[manualfree]
@@ -46,7 +46,7 @@ mut:
 pub mut:
 	shader         gfx.Shader
 	pip            gfx.Pipeline
-	pass           gfx.Pass
+	pass           gfx.Attachments
 	pass_action    gfx.PassAction
 	pass_action2   gfx.PassAction
 	gradient       gfx.Image
@@ -242,7 +242,7 @@ pub fn (mut attr SliderRendererAttr) draw_slider(alpha f64, colors []f64) {
 
 	// FIXME: This is janky asf lmao but it works
 	// vfmt off
-	gfx.begin_pass(graphic.global_renderer.pass, &graphic.global_renderer.pass_action2)
+	gfx.begin_pass(attachments: graphic.global_renderer.pass, action: graphic.global_renderer.pass_action2)
 		gfx.apply_pipeline(graphic.global_renderer.pip)
 		gfx.apply_bindings(&attr.bindings)
 		gfx.apply_uniforms(.vs, C.SLOT_vs_uniform, graphic.global_renderer.uniform)
@@ -251,7 +251,7 @@ pub fn (mut attr SliderRendererAttr) draw_slider(alpha f64, colors []f64) {
 		gfx.end_pass()
 	gfx.commit()
 
-	gfx.begin_default_pass(graphic.global_renderer.pass_action, int(settings.global.window.width), int(settings.global.window.height))
+	gfx.begin_pass(sapp.create_default_pass(graphic.global_renderer.pass_action))
 		sgl.enable_texture()
 		sgl.texture(graphic.global_renderer.color_img, gfx.Sampler{})
 		sgl.c4b(255, 255, 255, u8(255 - (255 * alpha)))
@@ -339,12 +339,12 @@ pub fn init_slider_renderer() {
 	renderer.depth_img = gfx.make_image(&img_desc)
 
 	// Pass
-	mut offscreen_pass_desc := gfx.PassDesc{
+	mut offscreen_pass_desc := gfx.AttachmentsDesc{
 		label: 'offscreen-pass'.str
 	}
-	offscreen_pass_desc.color_attachments[0].image = renderer.color_img
-	offscreen_pass_desc.depth_stencil_attachment.image = renderer.depth_img
-	renderer.pass = gfx.make_pass(&offscreen_pass_desc)
+	offscreen_pass_desc.colors[0].image = renderer.color_img
+	offscreen_pass_desc.depth_stencil.image = renderer.depth_img
+	renderer.pass = gfx.make_attachments(&offscreen_pass_desc)
 
 	// Pass action
 	renderer.pass_action.colors[0] = gfx.ColorAttachmentAction{

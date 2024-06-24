@@ -8,6 +8,7 @@ import core.osu.parsers.beatmap.object
 import gx
 import sokol.gfx
 import sokol.sgl
+import sokol.sapp
 import framework.ffmpeg
 import framework.logging
 import framework.math.time
@@ -313,8 +314,7 @@ pub fn (mut beatmap Beatmap) draw() {
 	beatmap.storyboard.mutex.@lock()
 
 	// Background/Storyboard draws
-	gfx.begin_default_pass(graphic.global_renderer.pass_action, int(settings.global.window.width),
-		int(settings.global.window.height))
+	gfx.begin_pass(sapp.create_default_pass(graphic.global_renderer.pass_action))
 
 	beatmap.storyboard.draw() // Includes background
 
@@ -364,8 +364,7 @@ pub fn (mut beatmap Beatmap) draw() {
 			}
 
 			// Render hitcircle
-			gfx.begin_default_pass(graphic.global_renderer.pass_action, int(settings.global.window.width),
-				int(settings.global.window.height))
+			gfx.begin_pass(sapp.create_default_pass(graphic.global_renderer.pass_action))
 			beatmap.queue[i].draw(
 				ctx: beatmap.ctx
 				time: beatmap.last_update

@@ -2,17 +2,22 @@ module logging
 
 import log
 
-pub const global = &KurarinLogger{
-	Log: &log.Log{
-		level: .info
-		output_target: .console
-	}
-}
+pub const global = KurarinLogger.create()
 
 pub struct KurarinLogger {
-	log.Log
+	log.ThreadSafeLog
 pub mut:
 	logs []string
+}
+
+pub fn KurarinLogger.create() &KurarinLogger {
+	mut k_logger := &KurarinLogger{
+		ThreadSafeLog: log.new_thread_safe_log()
+	}
+
+	k_logger.set_level(.info)
+
+	return k_logger
 }
 
 interface Any {

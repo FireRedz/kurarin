@@ -21,7 +21,7 @@ pub enum OSUGameplayMode {
 }
 
 pub struct OSUGameplay {
-mut:
+pub mut:
 	beatmap         &beatmap.Beatmap = unsafe { nil }
 	beatmap_audio   &common.ITrack
 	beatmap_ruleset &ruleset.Ruleset = unsafe { nil }

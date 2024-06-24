@@ -1,7 +1,6 @@
 module visualizer
 
 import gx
-import framework.audio
 import framework.audio.common
 import framework.math.vector
 import framework.graphic.context

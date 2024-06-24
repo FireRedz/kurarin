@@ -156,8 +156,7 @@ pub fn (mut window Window) draw() {
 		window.GeneralWindow.draw_stats()
 	}
 
-	gfx.begin_default_pass(graphic.global_renderer.pass_action, int(settings.global.window.width),
-		int(settings.global.window.height))
+	gfx.begin_pass(sapp.create_default_pass(graphic.global_renderer.pass_action))
 	sgl.draw()
 	gfx.end_pass()
 

@@ -2,10 +2,8 @@
 
 module cursor
 
-import time
 import gg
 import gx
-import math
 import sync
 import framework.graphic.sprite
 import framework.graphic.context
@@ -13,7 +11,6 @@ import framework.math.easing
 import framework.math.vector
 import framework.math.time as time2
 import core.common.settings
-import core.osu.parsers.beatmap
 import core.osu.parsers.beatmap.object as gameobject
 import core.osu.system.skin
 import core.osu.x
