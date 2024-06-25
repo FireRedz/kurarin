@@ -1,4 +1,7 @@
 module constants
 
-pub const game_name = 'Kurarin'
-pub const game_version = 'rewrite-0.0.6.5 [osu!]'
+import v.vmod
+
+pub const game_manifest = vmod.decode(@VMOD_FILE) or { panic(err) }
+pub const game_name = game_manifest.name
+pub const game_version = game_manifest.version
