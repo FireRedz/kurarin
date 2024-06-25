@@ -106,30 +106,6 @@ pub fn make_replay(mut current_beatmap beatmap.Beatmap, mut cursor Cursor, playe
 					)
 				}
 				// vfmt on
-
-				// Dance Movement
-				// mut slider_mover := &movers.HalfCircleMover{}
-				// slider_mover.init(object.hitcircle, object, direction)
-				// slider_mover.time.start = object.time.start
-				// slider_mover.time.end = object.time.end
-				// slider_mover.start = object.hitcircle.position
-				// slider_mover.end = object.end_position
-				// slider_mover.middle.x = (slider_mover.start.x + slider_mover.end.x) / 2.0
-				// slider_mover.middle.y = (slider_mover.start.y + slider_mover.end.y) / 2.0
-				// slider_mover.radius = slider_mover.middle.distance(slider_mover.start)
-				// slider_mover.ang = math.atan2(slider_mover.start.y - slider_mover.middle.y, slider_mover.start.x - slider_mover.middle.x)
-
-				// for i := slider_mover.time.start; i < slider_mover.time.end; i += offset {
-				// 	position := slider_mover.get_point_at(i)
-				// 	cursor.add_transform(
-				// 		typ: .move,
-				// 		easing: easing.quad_out,
-				// 		time: time.Time{i, i + offset},
-				// 		before: [last_position.x, last_position.y],
-				// 		after: [position.x, position.y]
-				// 	)
-				// 	last_position = position
-				// }
 			}
 		} else if mut object is gameobject.Spinner {
 			// oh man here we go agane

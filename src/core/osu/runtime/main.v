@@ -400,11 +400,11 @@ pub fn initiate_game_loop(argument GameArgument) {
 
 			window.ruleset_mutex.@lock()
 			if keycode == .a {
-				window.cursors[0].left_button = true
+				window.cursors[0].input.left_button = true
 			}
 
 			if keycode == .s {
-				window.cursors[0].right_button = true
+				window.cursors[0].input.right_button = true
 			}
 
 			window.ruleset_mutex.unlock()
@@ -416,11 +416,11 @@ pub fn initiate_game_loop(argument GameArgument) {
 
 			window.ruleset_mutex.@lock()
 			if keycode == .a {
-				window.cursors[0].left_button = false
+				window.cursors[0].input.left_button = false
 			}
 
 			if keycode == .s {
-				window.cursors[0].right_button = false
+				window.cursors[0].input.right_button = false
 			}
 
 			window.ruleset_mutex.unlock()

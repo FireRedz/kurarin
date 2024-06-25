@@ -198,26 +198,27 @@ pub fn (mut ruleset Ruleset) update_click_for(player_cursor &cursor.Cursor, time
 
 	// TODO: Replay/Player
 	if true {
-		player.left_cond = !player.buttons.left && player.cursor.left_button
-		player.right_cond = !player.buttons.right && player.cursor.right_button
+		player.left_cond = !player.buttons.left && player.cursor.input.left_button
+		player.right_cond = !player.buttons.right && player.cursor.input.right_button
 
 		player.left_cond_e = player.left_cond
 		player.right_cond_e = player.right_cond
 
-		if player.buttons.left != player.cursor.left_button
-			|| player.buttons.right != player.cursor.right_button {
-			player.game_down_state = player.cursor.left_button || player.cursor.right_button
+		if player.buttons.left != player.cursor.input.left_button
+			|| player.buttons.right != player.cursor.input.right_button {
+			player.game_down_state = player.cursor.input.left_button
+				|| player.cursor.input.right_button
 			player.last_button2 = player.last_button
 			player.last_button = player.mouse_down_button
 
 			player.mouse_down_button = Buttons(0)
 
 			// vfmt off
-			if player.cursor.left_button {
+			if player.cursor.input.left_button {
 				player.mouse_down_button |= left_mouse
 			}
 
-			if player.cursor.right_button {
+			if player.cursor.input.right_button {
 				player.mouse_down_button |= right_mouse
 			}
 			// vfmt on
@@ -233,8 +234,8 @@ pub fn (mut ruleset Ruleset) update_click_for(player_cursor &cursor.Cursor, time
 
 	// TODO: Replay/Player
 	if true {
-		player.buttons.left = player.cursor.left_button
-		player.buttons.right = player.cursor.right_button
+		player.buttons.left = player.cursor.input.left_button
+		player.buttons.right = player.cursor.input.right_button
 	}
 }
 

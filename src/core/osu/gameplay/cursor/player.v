@@ -21,7 +21,7 @@ pub fn make_player_cursor(mut ctx context.Context) &PlayerCursor {
 		}
 	}
 
-	player_c.cursor.manual = true
+	player_c.cursor.owner = .player
 
 	return player_c
 }

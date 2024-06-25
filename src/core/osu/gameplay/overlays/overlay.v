@@ -60,7 +60,7 @@ pub fn (mut overlay GameplayOverlay) update(_time f64) {
 	}
 
 	// KEYs
-	current_states := [overlay.cursor.left_button, overlay.cursor.right_button]!
+	current_states := [overlay.cursor.input.left_button, overlay.cursor.input.right_button]!
 
 	for i, state in current_states {
 		mut color := [255.0, 222.0, 0.0]

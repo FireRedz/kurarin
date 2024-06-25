@@ -30,9 +30,9 @@ pub fn (mut replay ReplayCursor) update(update_time f64, update_delta f64) {
 		if update_time >= replay.events[i].time {
 			keys := replay.events[i].keys
 
-			replay.cursor.left_button = (keys & cursor.osu_m1) == cursor.osu_m1
+			replay.cursor.input.left_button = (keys & cursor.osu_m1) == cursor.osu_m1
 				|| (keys & cursor.osu_k1) == cursor.osu_k1
-			replay.cursor.right_button = (keys & cursor.osu_m2) == cursor.osu_m2
+			replay.cursor.input.right_button = (keys & cursor.osu_m2) == cursor.osu_m2
 				|| (keys & cursor.osu_k2) == cursor.osu_k2
 
 			replay.events = replay.events[1..]

@@ -111,40 +111,40 @@ pub fn (mut osu OSUGameplay) update(time_ms f64, time_delta f64) {
 
 // Events (Key, Mouse)
 pub fn (mut osu OSUGameplay) event_keydown(keycode gg.KeyCode) {
-	if !osu.cursor.cursor.manual {
+	if osu.cursor.cursor.owner != .player {
 		return
 	}
 
 	osu.beatmap_ruleset.mutex.@lock()
 
 	if keycode == settings.global.gameplay.input.left_key {
-		osu.cursor.cursor.left_button = true
+		osu.cursor.cursor.input.left_button = true
 	}
 
 	if keycode == settings.global.gameplay.input.right_key {
-		osu.cursor.cursor.right_button = true
+		osu.cursor.cursor.input.right_button = true
 	}
 	osu.beatmap_ruleset.mutex.unlock()
 }
 
 pub fn (mut osu OSUGameplay) event_keyup(keycode gg.KeyCode) {
-	if !osu.cursor.cursor.manual {
+	if osu.cursor.cursor.owner != .player {
 		return
 	}
 
 	osu.beatmap_ruleset.mutex.@lock()
 	if keycode == settings.global.gameplay.input.left_key {
-		osu.cursor.cursor.left_button = false
+		osu.cursor.cursor.input.left_button = false
 	}
 
 	if keycode == settings.global.gameplay.input.right_key {
-		osu.cursor.cursor.right_button = false
+		osu.cursor.cursor.input.right_button = false
 	}
 	osu.beatmap_ruleset.mutex.unlock()
 }
 
 pub fn (mut osu OSUGameplay) event_mouse(p_x f32, p_y f32) {
-	if !osu.cursor.cursor.manual {
+	if osu.cursor.cursor.owner != .player {
 		return
 	}
 

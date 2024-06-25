@@ -120,8 +120,8 @@ pub fn (mut auto AutoCursor) update(time f64, delta f64) {
 
 	auto.cursor.update(time, delta) // Trails
 
-	auto.cursor.left_button = time < auto.release_left_at
-	auto.cursor.right_button = time < auto.release_right_at
+	auto.cursor.input.left_button = time < auto.release_left_at
+	auto.cursor.input.right_button = time < auto.release_right_at
 	auto.last_time = time
 }
 
