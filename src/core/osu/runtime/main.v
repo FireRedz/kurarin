@@ -153,6 +153,7 @@ pub fn (mut window Window) draw() {
 
 	// Texts (only on windowed mode)
 	if !settings.global.video.record {
+		window.GeneralWindow.draw_branding()
 		window.GeneralWindow.draw_stats()
 	}
 

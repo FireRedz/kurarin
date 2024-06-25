@@ -44,6 +44,7 @@ pub fn (mut window Window) draw(_ voidptr) {
 
 	window.ctx.begin()
 	window.tick_draw()
+	window.GeneralWindow.draw_branding()
 	window.GeneralWindow.draw_stats()
 	window.ctx.end()
 

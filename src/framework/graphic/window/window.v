@@ -52,10 +52,12 @@ pub fn (mut window GeneralWindow) draw_stats() {
 
 pub fn (mut window GeneralWindow) draw_branding() {
 	// Game info
-	window.ctx.draw_rect_filled(0, 50, 60, 16, gx.Color{0, 0, 0, 100})
+	window.ctx.draw_rect_filled(0, 50, f32(window.ctx.text_width(constants.game_name)),
+		16, gx.Color{0, 0, 0, 100})
 	window.ctx.draw_text(5, 50, constants.game_name, gx.TextCfg{ color: gx.white })
-	window.ctx.draw_rect_filled(0, 50 + 16, 145, 16, gx.Color{0, 0, 0, 100})
+	window.ctx.draw_rect_filled(0, 50 + 16, f32(window.ctx.text_width(constants.game_version)) + 16,
+		16, gx.Color{0, 0, 0, 100})
 	window.ctx.draw_text(5, 50 + 16, constants.game_version, gx.TextCfg{ color: gx.white })
 	window.ctx.draw_rect_filled(0, 50 + 16 + 16, 125, 16, gx.Color{0, 0, 0, 100})
-	window.ctx.draw_text(5, 50 + 16 + 16, 'Work in Progress!!', gx.TextCfg{ color: gx.white })
+	window.ctx.draw_text(5, 50 + 16 + 16, 'In development.', gx.TextCfg{ color: gx.white })
 }
