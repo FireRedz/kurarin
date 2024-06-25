@@ -108,6 +108,11 @@ pub fn (v Vector2[T]) equal(t Vector2[T]) bool {
 	return v.x == t.x && v.y == t.y
 }
 
+// Origin math
+pub fn (v Vector2[T]) apply_origin(t Origin, s Vector2[T]) Vector2[T] {
+	return v.sub(t.Vector2.multiply(s))
+}
+
 pub fn is_straight_line[T](a Vector2[T], b Vector2[T], c Vector2[T]) bool {
 	return math.abs((b.y - a.y) * (c.x - a.x) - (b.x - a.x) * (c.y - a.y)) < 0.001
 }

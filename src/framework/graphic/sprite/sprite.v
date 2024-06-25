@@ -309,7 +309,7 @@ pub fn (mut sprite Sprite) draw(arg CommonSpriteArgument) {
 
 		pos := sprite.position
 			.scale(arg.camera.scale)
-			.sub(sprite.origin.Vector2.multiply(size))
+			.apply_origin(sprite.origin, size)
 			.add(arg.camera.offset)
 
 		if arg.batch {

@@ -25,7 +25,7 @@ pub fn (mut danser_cursor DanserCursor) draw(arg sprite.CommonSpriteArgument) {
 		size := danser_cursor.size.scale(0.9 * (0.1 +
 			f64(i) / f64(danser_cursor.last_positions.len) * 0.9))
 
-		pos := danser_cursor.last_positions[i].sub(danser_cursor.origin.Vector2.multiply(size))
+		pos := danser_cursor.last_positions[i].apply_origin(danser_cursor.origin, size)
 
 		arg.ctx.draw_image_with_config(context.DrawImageConfig{
 			img: &danser_cursor.textures[1]
@@ -42,10 +42,7 @@ pub fn (mut danser_cursor DanserCursor) draw(arg sprite.CommonSpriteArgument) {
 	}
 
 	// Cursor
-	pos := danser_cursor.position.sub(danser_cursor.origin.Vector2.multiply(
-		x: danser_cursor.size.x
-		y: danser_cursor.size.y
-	))
+	pos := danser_cursor.position.apply_origin(danser_cursor.origin, danser_cursor.size)
 
 	arg.ctx.draw_image_with_config(context.DrawImageConfig{
 		img: &danser_cursor.textures[0]
