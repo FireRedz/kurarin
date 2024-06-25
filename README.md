@@ -9,11 +9,12 @@
 ## Disclaimer
 
 This program is far from finished and it's not exactly stable either but it works most of the time. <br/>
-Use [danser-go](https://github.com/Wieku/danser-go) or [McOsu](https://github.com/McKay42/McOsu), if you're looking for client alternative.
+Use [danser-go](https://github.com/Wieku/danser-go) or [McOsu](https://github.com/McKay42/McOsu), if you're looking for a client alternative.
 
 ## Preview
-[Click here for video preview(s)](PREVIEWS.md)
-![2024-06-24_10-26](https://github.com/xjunko/kurarin/assets/44401509/056fed8b-550f-4a59-81b4-4e8c61a6c08f)
+[Click here for more video preview(s)](PREVIEWS.md)
+
+https://github.com/xjunko/kurarin/assets/44401509/c834fcd4-43b3-4abc-bc6a-967446b2ed77
 
 ## Releases
 
@@ -36,17 +37,15 @@ The next startup will be normal.
 
 Currently supports:
 
-- Gameplay (thank you, wieku)
-- Auto (+ cursordance, again, thanks wieku)
+- Gameplay
+- Auto (+ cursordance)
 - Rendering (Requires [FFmpeg](https://ffmpeg.org/) to be installed in `$PATH`)
 - Storyboard
-<!-- - Replay (`.osr`) support -->
+- Replay (`.osr`) support
 
 Currently does not support:
 
-- Stable memory management (This program leaks memory currently, especially with sliders.)
-- User interface
-- Aspire maps
+- Stupid/Aspire maps, the program will either OOM your system or straight up crash, beware.
 
 ## Building
 
@@ -60,8 +59,7 @@ Currently does not support:
 
 Tested with Arch but it _should_ work anywhere else as long as it's linux.
 
-Use [`ext/build.sh`](https://github.com/FireRedz/kurarin/blob/rewrite/ext/build.sh) to build the program, no makefile
-fuckery or smth like that.
+Use [`ext/build.sh`](https://github.com/FireRedz/kurarin/blob/rewrite/ext/build.sh) to build the program, no makefile :).
 
 ## Credits
 
