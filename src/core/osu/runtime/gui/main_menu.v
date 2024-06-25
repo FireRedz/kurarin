@@ -78,7 +78,7 @@ pub fn (mut main_menu MainMenu) change_version(version &beatmap.Beatmap) {
 
 		background.reset_size_based_on_texture(
 			fit_size: true
-			source: vector.Vector2[f64]{1280.0, 720.0}
+			source: vector.Vector2[f64]{settings.global.window.width, settings.global.window.height}
 		)
 
 		main_menu.background.add(mut background)
@@ -115,7 +115,8 @@ pub fn (mut main_menu MainMenu) update(time_ms f64) {
 pub fn (mut main_menu MainMenu) draw(arg sprite.CommonSpriteArgument) {
 	main_menu.background.draw(arg)
 
-	main_menu.window.ctx.draw_rect_filled(0, 0, 1280, 720, gg.Color{0, 0, 0, 100})
+	main_menu.window.ctx.draw_rect_filled(0, 0, int(settings.global.window.width), int(settings.global.window.height),
+		gg.Color{0, 0, 0, 100})
 
 	if isnil(main_menu.current_beatmap) {
 		return
@@ -134,8 +135,10 @@ pub fn (mut main_menu MainMenu) draw(arg sprite.CommonSpriteArgument) {
 	main_menu.window.ctx.draw_rect_empty(0, 0, 370, 150, c_t_temporary_border_color)
 
 	// Long
-	main_menu.window.ctx.draw_rect_filled(0, 0, 1280, 100, gg.Color{0, 0, 0, 255})
-	main_menu.window.ctx.draw_rect_empty(0, 0, 1280, 100, c_t_temporary_border_color)
+	main_menu.window.ctx.draw_rect_filled(0, 0, int(settings.global.window.width), 100,
+		gg.Color{0, 0, 0, 255})
+	main_menu.window.ctx.draw_rect_empty(0, 0, int(settings.global.window.width), 100,
+		c_t_temporary_border_color)
 
 	// Titles
 	main_menu.window.ctx.draw_text(10, 0, '${main_menu.current_version.metadata.artist} - ${main_menu.current_version.metadata.title} [${main_menu.current_version.metadata.version}]',
@@ -172,17 +175,20 @@ pub fn (mut main_menu MainMenu) draw(arg sprite.CommonSpriteArgument) {
 			text_color.b = 193
 		}
 
-		main_menu.window.ctx.draw_rect_filled(int(1280.0 * (2.5 / 4)), start_y, 500, y_size,
-			gg.Color{0, 0, 0, 100})
-		main_menu.window.ctx.draw_text(int(1280.0 * (2.5 / 4)), start_y, version.metadata.title,
+		main_menu.window.ctx.draw_rect_filled(int((settings.global.window.width) * (2.5 / 4)),
+			start_y, int(settings.global.window.width), y_size, gg.Color{0, 0, 0, 100})
+		main_menu.window.ctx.draw_text(int((settings.global.window.width) * (2.5 / 4)),
+			start_y, version.metadata.title,
 			color: text_color
 			size: 25
 		)
-		main_menu.window.ctx.draw_text(int(1280.0 * (2.5 / 4)), start_y + 25, '${version.metadata.artist} // ${version.metadata.creator}',
+		main_menu.window.ctx.draw_text(int((settings.global.window.width) * (2.5 / 4)),
+			start_y + 25, '${version.metadata.artist} // ${version.metadata.creator}',
 			color: text_color
 			size: 20
 		)
-		main_menu.window.ctx.draw_text(int(1280.0 * (2.5 / 4)), start_y + 20 + 25, version.metadata.version,
+		main_menu.window.ctx.draw_text(int((settings.global.window.width) * (2.5 / 4)),
+			start_y + 20 + 25, version.metadata.version,
 			color: text_color
 			size: 25
 			bold: true
@@ -190,13 +196,13 @@ pub fn (mut main_menu MainMenu) draw(arg sprite.CommonSpriteArgument) {
 	}
 
 	// Info
-	main_menu.window.ctx.draw_text(1280 - 100, 32, 'Gameplay Mode: [Press Key]',
+	main_menu.window.ctx.draw_text(int(settings.global.window.width) - 100, 32, 'Gameplay Mode: [Press Key]',
 		color: gg.Color{255, 255, 255, 255}
 		size: 20
 		bold: true
 		align: .right
 	)
-	main_menu.window.ctx.draw_text(1280 - 100, 32 + 20, 'A - Auto | P - Play | R - Replay',
+	main_menu.window.ctx.draw_text(int(settings.global.window.width) - 100, 32 + 20, 'A - Auto | P - Play | R - Replay',
 		color: gg.Color{255, 255, 255, 255}
 		size: 20
 		bold: true

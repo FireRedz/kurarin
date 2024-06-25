@@ -84,13 +84,15 @@ pub fn (mut window GUIWindow) draw(_ voidptr) {
 		gui.c_scene_error {
 			window.ctx.begin()
 
-			window.ctx.draw_text(1280 / 2, 720 / 2, 'Invalid beatmap path!',
+			window.ctx.draw_text(int(settings.global.window.width / 2), int(settings.global.window.height / 2),
+				'Invalid beatmap path!',
 				color: gg.Color{255, 255, 255, 255}
 				size: 32
 				align: .center
 				vertical_align: .middle
 			)
 
+			window.GeneralWindow.draw_branding()
 			window.draw_stats()
 
 			// Draw the last 32 logs
@@ -98,9 +100,9 @@ pub fn (mut window GUIWindow) draw(_ voidptr) {
 			for i := logging.global.logs.len - 1; i > math.max(logging.global.logs.len - 32,
 				0); i-- {
 				t++
-				window.ctx.draw_rect_filled(0, 720 - t * 16, window.ctx.text_width(logging.global.logs[i]),
-					16, gg.Color{0, 0, 0, 100})
-				window.ctx.draw_text(0, 720 - t * 16, logging.global.logs[i],
+				window.ctx.draw_rect_filled(0, int(settings.global.window.height) - t * 16,
+					window.ctx.text_width(logging.global.logs[i]), 16, gg.Color{0, 0, 0, 100})
+				window.ctx.draw_text(0, int(settings.global.window.height) - t * 16, logging.global.logs[i],
 					color: gg.Color{255, 255, 255, 100}
 				)
 			}
@@ -113,6 +115,7 @@ pub fn (mut window GUIWindow) draw(_ voidptr) {
 			window.menu.draw(ctx: window.ctx)
 			window.mutex.unlock()
 
+			window.GeneralWindow.draw_branding()
 			window.draw_stats()
 
 			// Draw the last 32 logs
@@ -120,9 +123,9 @@ pub fn (mut window GUIWindow) draw(_ voidptr) {
 			for i := logging.global.logs.len - 1; i > math.max(logging.global.logs.len - 32,
 				0); i-- {
 				t++
-				window.ctx.draw_rect_filled(0, 720 - t * 16, window.ctx.text_width(logging.global.logs[i]),
-					16, gg.Color{0, 0, 0, 100})
-				window.ctx.draw_text(0, 720 - t * 16, logging.global.logs[i],
+				window.ctx.draw_rect_filled(0, int(settings.global.window.height) - t * 16,
+					window.ctx.text_width(logging.global.logs[i]), 16, gg.Color{0, 0, 0, 100})
+				window.ctx.draw_text(0, int(settings.global.window.height) - t * 16, logging.global.logs[i],
 					color: gg.Color{255, 255, 255, 100}
 				)
 			}
@@ -137,9 +140,11 @@ pub fn (mut window GUIWindow) draw(_ voidptr) {
 			window.menu.draw(ctx: window.ctx)
 			window.mutex.unlock()
 
-			window.ctx.draw_rect_filled(0, 0, 1280, 720, gg.Color{0, 0, 0, 200})
+			window.ctx.draw_rect_filled(0, 0, int(settings.global.window.width), int(settings.global.window.height),
+				gg.Color{0, 0, 0, 200})
 
-			window.ctx.draw_text(1280 / 2, 720 / 2, 'Loading...',
+			window.ctx.draw_text(int(settings.global.window.width) / 2, int(settings.global.window.height) / 2,
+				'Loading...',
 				color: gg.Color{255, 255, 255, 255}
 				size: 64
 				align: .center
@@ -181,6 +186,7 @@ pub fn (mut window GUIWindow) draw(_ voidptr) {
 			window.mutex.unlock()
 
 			window.ctx.begin()
+			window.GeneralWindow.draw_branding()
 			window.draw_stats()
 
 			// Draw the last 16 logs
@@ -352,8 +358,8 @@ pub fn run(args []string) {
 
 	mut gg_context := gg.new_context(
 		// Basic
-		width: 1280
-		height: 720
+		width: int(settings.global.window.width)
+		height: int(settings.global.window.height)
 		user_data: window
 		// FNs
 		init_fn: window.init
