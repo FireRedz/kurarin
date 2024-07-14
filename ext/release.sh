@@ -22,3 +22,8 @@ cp assets/common build/assets/ -r
 cp assets/osu/shaders build/assets/osu/shaders -r
 cp assets/osu/skins build/assets/osu/skins -r
 cp "assets/osu/maps/Hikari no Naka e" build/assets/osu/maps -r
+
+cd build
+zip -r ../linux_x64.zip .
+cd ..
+rm -rf build/
