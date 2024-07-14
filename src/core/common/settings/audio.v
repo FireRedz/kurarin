@@ -14,7 +14,7 @@ pub mut:
 
 pub fn make_audio_settings() Audio {
 	mut audio_ := Audio{
-		global: 100
+		global: 50
 		music: 75
 		sample: 75
 		pitch: 1.0
