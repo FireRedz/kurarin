@@ -9,7 +9,7 @@ import framework.math.easing
 import framework.graphic.sprite
 import framework.graphic.context
 
-const osu_cursor_trail_delta = f64(1000.0 / 120.0) // 120FPS
+pub const osu_cursor_trail_delta = f64(1000.0 / 120.0) // 120FPS
 
 // short-length trail, 120fps frame delay
 pub struct PeppyCursor {
