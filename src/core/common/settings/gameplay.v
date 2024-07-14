@@ -124,5 +124,11 @@ pub fn make_gameplay_settings() Gameplay {
 		}
 	}
 
+	$if release_unique ? {
+		gameplay_.paths.beatmaps = 'assets/osu/maps'
+		gameplay_.paths.skins = 'assets/osu/skins'
+		gameplay_.skin.current_skin = 'default'
+	}
+
 	return gameplay_
 }
