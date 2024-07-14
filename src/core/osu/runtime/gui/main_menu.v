@@ -202,7 +202,24 @@ pub fn (mut main_menu MainMenu) draw(arg sprite.CommonSpriteArgument) {
 		bold: true
 		align: .right
 	)
+
 	main_menu.window.ctx.draw_text(int(settings.global.window.width) - 100, 32 + 20, 'A - Auto | P - Play | R - Replay',
+		color: gg.Color{255, 255, 255, 255}
+		size: 20
+		bold: true
+		align: .right
+	)
+
+	main_menu.window.ctx.draw_text(int(settings.global.window.width) - 100, 32 + 20 + 20,
+		'Left-Right for difficulty selection',
+		color: gg.Color{255, 255, 255, 255}
+		size: 20
+		bold: true
+		align: .right
+	)
+
+	main_menu.window.ctx.draw_text(int(settings.global.window.width) - 100, 32 + 20 + 20 + 20,
+		'Up-Down for beatmap selection',
 		color: gg.Color{255, 255, 255, 255}
 		size: 20
 		bold: true

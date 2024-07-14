@@ -22,22 +22,6 @@ pub fn (mut reader FFmpegReader) initialize_video_data() {
 	if !os.exists(reader.video_path) {
 		logging.error('Tried to read unexisting video file.')
 	}
-
-	// NOTE: We use gpu (sokol, opengl) to resize the video now instead of using ffmpeg, this should make it faster.
-	// // Resolution
-	// reader.target_resolution = [settings.global.window.width, settings.global.window.height]!
-
-	// // Resize video to fit target_resolution
-	// mut ratio := reader.target_resolution[0] / reader.metadata.width
-
-	// // Make sure both sides fits the screen
-	// for (reader.metadata.height * ratio) < reader.target_resolution[1] {
-	// 	ratio += 0.05
-	// }
-
-	// // Resize
-	// reader.metadata.width *= ratio
-	// reader.metadata.height *= ratio
 }
 
 pub fn (mut reader FFmpegReader) initialize_ffmpeg() {
