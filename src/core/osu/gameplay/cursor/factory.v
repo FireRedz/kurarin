@@ -12,8 +12,8 @@ const offset = osu_cursor_trail_delta // 120fps
 
 const tag_on_new_combo = true
 
-// [deprecated: "TODO: remove this after we got realtime auto."]
-pub fn make_replay(mut current_beatmap beatmap.Beatmap, mut cursor Cursor, player_number int, max_player int) {
+@[deprecated: 'Implementation is flaky, beware.']
+pub fn make_replay_tag(mut current_beatmap beatmap.Beatmap, mut cursor Cursor, player_number int, max_player int) {
 	mut last_object := unsafe { &current_beatmap.objects[0] }
 	mut last_position := current_beatmap.objects[0].get_start_position()
 	mut direction := 1

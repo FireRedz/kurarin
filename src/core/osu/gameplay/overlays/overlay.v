@@ -8,6 +8,7 @@ import core.osu.system.player
 import core.osu.gameplay.cursor
 import core.osu.gameplay.ruleset
 import core.common.settings
+import framework.logging
 import framework.math.time
 import framework.math.vector
 import framework.graphic.sprite
@@ -165,9 +166,17 @@ pub fn (mut overlay GameplayOverlay) draw() {
 }
 
 pub fn new_gameplay_overlay(player_ruleset &ruleset.Ruleset, player_cursor &cursor.Cursor, player_info player.Player, ctx &context.Context) &GameplayOverlay {
+	logging.debug('[Overlay] Creating for player: ${player_info.name}')
+
+	logging.debug('[Overlay] Stage 0')
 	mut hitresult := gameplay.make_hit_result(ctx, player_ruleset.beatmap.difficulty.Difficulty)
+	logging.debug('[Overlay] Stage 0.1')
 	mut counter := gameplay.make_combo_counter()
+	logging.debug('[Overlay] Stage 0.2')
 	mut score_font := sprite.make_number_font(skin.global.meta.score_prefix)
+	logging.debug('[Overlay] Stage 0.3')
+
+	logging.debug('[Overlay] Stage 1')
 
 	mut overlay := &GameplayOverlay{
 		ruleset: unsafe { player_ruleset }

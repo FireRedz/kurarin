@@ -1,6 +1,7 @@
 module gameplay
 
 import rand
+import framework.logging
 import framework.math.time
 import framework.math.vector
 import framework.graphic.sprite
@@ -21,6 +22,8 @@ pub mut:
 }
 
 pub fn make_hit_result(ctx &context.Context, diff difficulty.Difficulty) &HitResults {
+	logging.debug('[HitResult] Difficulty: ${diff}')
+
 	mut hitresult := &HitResults{
 		ctx: unsafe { ctx }
 		diff: diff
