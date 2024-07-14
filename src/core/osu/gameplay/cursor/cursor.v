@@ -7,6 +7,7 @@ import sync
 import framework.graphic.sprite
 import framework.graphic.context
 import core.osu.graphics
+import core.common.settings
 
 const max_valid_style = 2
 const osu_cursor_trail_delta = f64(1000.0 / 120.0) // 120FPS
@@ -60,7 +61,22 @@ pub fn make_cursor(mut ctx context.Context) &Cursor {
 	mut cursor := &Cursor{
 		ctx: ctx
 		always_visible: true
-		renderer: graphics.DanserCursor.create()
+		renderer: graphics.DebugCursor.create()
+	}
+
+	match int(settings.global.gameplay.skin.cursor.style) {
+		-1 {
+			cursor.renderer = graphics.DebugCursor.create()
+		}
+		0, 1 {
+			cursor.renderer = graphics.PeppyCursor.create()
+		}
+		2 {
+			cursor.renderer = graphics.DanserCursor.create()
+		}
+		else {
+			panic('Invalid cursor style selected, only supports 0 and 1.')
+		}
 	}
 	return cursor
 }
