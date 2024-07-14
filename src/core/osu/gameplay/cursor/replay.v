@@ -56,12 +56,10 @@ pub fn make_replay_cursor(mut ctx context.Context, path_to_replay string) &Repla
 
 	auto.player = replay_parser.player
 
-	mut replay_time := 0.0
 	mut last_pos := [0.0, 0.0]
 
 	for action in replay_parser.frames {
 		delta := action.delta
-		replay_time += delta
 
 		// Movement
 		current_x := action.position[0]
@@ -69,7 +67,7 @@ pub fn make_replay_cursor(mut ctx context.Context, path_to_replay string) &Repla
 
 		auto.cursor.add_transform(
 			typ: .move
-			time: time.Time{replay_time - delta, replay_time}
+			time: time.Time{action.time - delta, action.time}
 			before: [
 				last_pos[0],
 				last_pos[1],
@@ -84,7 +82,7 @@ pub fn make_replay_cursor(mut ctx context.Context, path_to_replay string) &Repla
 		keys := action.keys
 
 		auto.events << ReplayEvent{
-			time: replay_time
+			time: action.time
 			keys: keys
 		}
 	}
