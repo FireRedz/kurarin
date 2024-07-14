@@ -2,9 +2,8 @@
 name: Build and release pre-release build
 
 on:
-  push:
-    branches:
-      - rewrite
+  workflow_dispatch
+  
 
 jobs:
   build-linux-x64:
