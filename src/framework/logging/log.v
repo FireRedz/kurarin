@@ -15,7 +15,11 @@ pub fn KurarinLogger.create() &KurarinLogger {
 		ThreadSafeLog: log.new_thread_safe_log()
 	}
 
-	k_logger.set_level(.info)
+	$if debug {
+		k_logger.set_level(.debug)
+	} $else {
+		k_logger.set_level(.info)
+	}
 
 	return k_logger
 }
