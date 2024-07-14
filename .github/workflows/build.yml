@@ -1,0 +1,60 @@
+# Derived from: https://github.com/vlang/vls/blob/use-tree-sitter/.github/workflows/prerelease.yml
+name: Build and release pre-release build
+
+on:
+  workflow_dispatch
+  
+
+jobs:
+  build-linux-x64:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Install Boehm GC
+        run: sudo apt-get install libgc-dev
+      - name: Install gg dependecies
+        run: sudo apt-get install libxi-dev libxcursor-dev libgl-dev libasound2-dev
+      - name: Checkout V
+        uses: actions/checkout@v2
+        with:
+          repository: vlang/v
+      - name: Checkout Kurarin
+        uses: actions/checkout@v2
+        with:
+          path: kurarin
+      - name: Build local V
+        run: make && sudo ./v symlink
+      - name: Compile Kurarin
+        run: |
+          cd kurarin
+          v --version
+          chmod +x ext/release.sh
+          ext/release.sh
+      - name: Create binary only artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux_x64
+          path: ./kurarin/linux_x64.zip
+
+
+  pre-release:
+    name: Create Github Release
+    needs: [build-linux-x64]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Fetch linux_x64
+        uses: actions/download-artifact@v1
+        with:
+          name: linux_x64
+          path: ./linux_x64
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        name: Create Release and Upload Assets
+        id: create_release
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Latest Development Build"
+          files: |
+            linux_x64/linux_x64.zip
