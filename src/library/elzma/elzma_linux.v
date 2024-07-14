@@ -11,7 +11,7 @@ type DecompressFree = fn (voidptr)
 fn C.fmemopen(&voidptr, usize, &u8) &C.FILE
 
 fn get_elzma_dl() !&voidptr {
-	return dl.open_opt('${@VMODROOT}/DLLs/libeasylzma.so.0.0.8', dl.rtld_lazy)!
+	return dl.open_opt('${@VMODROOT}/DLLs/libeasylzma.so', dl.rtld_lazy)!
 }
 
 fn read_func(mut ctx []u8, buf &voidptr, size &usize) int {
@@ -68,6 +68,8 @@ pub fn decode_lzma(data []u8) !string {
 		}
 		return final
 	}
+
+	panic('[ELZMA] Failed to load libeasylzma.so.0.0.8. [Linux]')
 
 	return ''
 }
