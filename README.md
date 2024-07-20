@@ -17,10 +17,8 @@ Use [danser-go](https://github.com/Wieku/danser-go) or [McOsu](https://github.co
 https://github.com/xjunko/kurarin/assets/44401509/c834fcd4-43b3-4abc-bc6a-967446b2ed77
 
 ## Releases
-
-~~You can get the latest development build from the CI/CD
-[here](https://github.com/FireRedz/kurarin/actions/workflows/ci.yml).~~ <br />
-Build CI is dead rn, [build it yourself](#building) for now.
+You can get the latest development build from the CI/CD
+[here](https://github.com/xjunko/kurarin/releases/tag/latest).
 
 ## Running
 
